@@ -3,22 +3,26 @@ import { ScrollView, View, Image, Text, StyleSheet, ActivityIndicator } from 're
 import { useEffect, useState } from 'react';
 import { getFilmsById } from '@/api'
 import { ResponseById } from '@/interface/ApiResponseInterfaces';
-
-type Props = {
-  id: string;
-  title: string;
-}
+import TitleFavorite from '@/components/title-favorite';
+import TitleLogout from '@/components/title-logout';
 
 export default function FilmsScreen() {
   const [film, setFilm] = useState<ResponseById | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const { id, title }: Props = useLocalSearchParams();
+  const { id, title } = useLocalSearchParams<{ id: string; title: string }>();
   const parseId = Number(id);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.setOptions({ title: title || 'Фильм' });
+    navigation.setOptions({
+      title: title || 'Фильм',
+      headerRight: () => (<View style={styles.titleIcons}>
+        <TitleFavorite filmId={parseId} />
+        <TitleLogout />
+      </View>)
+
+    });
 
     const fetchFilmDetails = async () => {
       if (id) {
@@ -48,45 +52,14 @@ export default function FilmsScreen() {
   return (
     <ScrollView>
       <Image source={{ uri: film.posterUrl }} style={styles.imageFilm} />
-      <Text style={styles.title}> О фильме {film.nameRu} </Text>
-      <View style={styles.row}>
-        <Text style={styles.label}>Описание фильма:</Text>
-        <Text style={styles.value}>{film.description}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Год производства:</Text>
-        <Text style={styles.value}>{film.year}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Страна:</Text>
-        <Text style={styles.value}>{film.countries.map((item, index) => (
-          <Text key={index}>
-            {item.country}{index < film.countries.length - 1 ? ', ' : ''}
-          </Text>
-        ))}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Жанр:</Text>
-        <Text style={styles.value}>{film.genres.map((item, index) => (
-          <Text key={index}>
-            {item.genre}{index < film.genres.length - 1 ? ', ' : ''}
-          </Text>
-        ))}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Слоган:</Text>
-        <Text style={styles.value}>{film.slogan}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Время:</Text>
-        <Text style={styles.value}>{film.filmLength} минут</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Рейтинг MPAA:</Text>
-        <Text style={styles.value}>{film.ratingMpaa.toUpperCase()}</Text>
-      </View>
+      <Text style={styles.title}>О фильме {film.nameRu}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Описание фильма:</Text> {film.description}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Год производства:</Text> {film.year}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Страна:</Text> {film.countries.map((item) => item.country).join(', ')}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Жанр:</Text> {film.genres.map((item) => item.genre).join(', ')}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Слоган:</Text> "{film.slogan}"</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Время:</Text> {film.filmLength} минут</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Рейтинг MPAA:</Text> {film.ratingMpaa.toUpperCase()}</Text>
     </ScrollView>
   );
 }
@@ -94,6 +67,7 @@ export default function FilmsScreen() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    backgroundColor: '#f9f9f9',
   },
   ActivityIndicator: {
     margin: 50,
@@ -109,26 +83,23 @@ const styles = StyleSheet.create({
     margin: 15,
     fontSize: 24,
     textAlign: 'center',
+    color: '#333',
+  },
+  titleIcons: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  boldText: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
   text: {
     marginHorizontal: 20,
+    marginBottom: 20,
     alignSelf: 'flex-start',
     fontSize: 16,
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginVertical: 5,
-  },
-  label: {
-    flex: 0.3,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  value: {
-    marginLeft: 10,
-    flex: 0.7,
-    fontSize: 16,
+    color: 'black',
   },
 });

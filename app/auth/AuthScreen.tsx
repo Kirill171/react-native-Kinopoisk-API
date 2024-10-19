@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Register from '@/app/auth/register';
 import Login from '@/app/auth/login';
+import { useNavigation } from 'expo-router';
 
 export default function AuthScreen() {
   const [showLogin, setShowLogin] = useState(true);
+
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    {
+      showLogin ?
+        navigation.setOptions({
+          title: "Авторизация",
+          headerRight: () => <></>,
+        })
+        :
+        navigation.setOptions({
+          title: 'Регистрация',
+          headerRight: () => <></>,
+        })
+    }
+  }, [showLogin, navigation]);
 
   return (
     <View style={styles.container}>

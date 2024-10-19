@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Parse from '@/config/parseConfig';
 import { useAuth } from './AuthProvider';
-import { useRouter } from 'expo-router';
 
 export default function Register() {
   const { setUser, login } = useAuth();
-  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');

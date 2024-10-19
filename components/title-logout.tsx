@@ -1,9 +1,12 @@
 import { useAuth } from '@/app/auth/AuthProvider';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
+import { ImageSourcePropType } from 'react-native';
 
 
-export default function HeaderRight() {
+export default function TitleLogout() {
   const { user, logout } = useAuth();
+
+  const exitIcon: ImageSourcePropType = require('@/assets/images/exit.png');
 
   const handleLogout = async () => {
     if (user) {
@@ -16,7 +19,7 @@ export default function HeaderRight() {
 
   return (
     <TouchableOpacity onPress={handleLogout} style={{ marginRight: 15 }}>
-      <Text style={{ color: '#007BFF', fontSize: 16 }}>Logout</Text>
+      <Image style={{ marginRight: -10, width: 24, height: 24, }} source={exitIcon} />
     </TouchableOpacity>
   );
 };
