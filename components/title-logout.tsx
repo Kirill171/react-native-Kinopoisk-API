@@ -19,7 +19,7 @@ export default function TitleLogout() {
 
   return (
     <TouchableOpacity onPress={handleLogout} style={{ marginRight: 15 }}>
-      <Image style={{ marginRight: -10, width: 24, height: 24, }} source={exitIcon} />
+      <Image style={{ width: 24, height: 24, }} source={exitIcon} />
     </TouchableOpacity>
   );
 };

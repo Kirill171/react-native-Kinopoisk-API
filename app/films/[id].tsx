@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    padding: 0,
   },
   boldText: {
     fontWeight: 'bold',

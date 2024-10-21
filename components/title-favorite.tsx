@@ -1,5 +1,5 @@
 import { useAuth } from '@/app/auth/AuthProvider';
-import { TouchableOpacity, Image, Alert, ActivityIndicator, Modal, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Image, ActivityIndicator, Modal, View, Text, StyleSheet } from 'react-native';
 import { ImageSourcePropType } from 'react-native';
 import Parse from '@/config/parseConfig';
 import { useEffect, useState, useCallback } from 'react';
