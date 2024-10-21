@@ -25,7 +25,7 @@ export default function FilmsScreen() {
     });
 
     const fetchFilmDetails = async () => {
-      if (id) {
+      if (parseId) {
         setLoading(true);
         try {
           const filmDetails = await getFilmsById(parseId);
@@ -58,8 +58,14 @@ export default function FilmsScreen() {
       <Text style={styles.text}><Text style={styles.boldText}>Страна:</Text> {film.countries.map((item) => item.country).join(', ')}</Text>
       <Text style={styles.text}><Text style={styles.boldText}>Жанр:</Text> {film.genres.map((item) => item.genre).join(', ')}</Text>
       <Text style={styles.text}><Text style={styles.boldText}>Слоган:</Text> "{film.slogan}"</Text>
-      <Text style={styles.text}><Text style={styles.boldText}>Время:</Text> {film.filmLength} минут</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Время:</Text> {Math.floor(film.filmLength / 60)} ч {film.filmLength % 60} мин</Text>
       <Text style={styles.text}><Text style={styles.boldText}>Рейтинг MPAA:</Text> {film.ratingMpaa.toUpperCase()}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Рейтинг кинокритиков:</Text> {film.ratingFilmCritics}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Оценок кинокритиков:</Text> {film.ratingFilmCriticsVoteCount}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Рейтинг IMDb:</Text> {film.ratingImdb}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>IMDb:</Text> {film.ratingImdbVoteCount} оценок</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Рейтинг фильма:</Text> {film.ratingKinopoisk}</Text>
+      <Text style={styles.text}><Text style={styles.boldText}>Оценивших фильм:</Text> {film.ratingKinopoiskVoteCount}</Text>
     </ScrollView>
   );
 }

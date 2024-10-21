@@ -18,7 +18,7 @@ export default function RootLayout() {
         <Stack.Screen
           name="+not-found"
           options={{
-            title: "Уупс! Это страница не найдена.",
+            title: "Уупс! Эта страница не найдена.",
           }}
         />
       </Stack>

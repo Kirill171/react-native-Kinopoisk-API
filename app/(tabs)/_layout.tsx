@@ -17,14 +17,12 @@ export default function TabLayout() {
           <Ionicons name="film" size={24} color={color} />
         ),
       }} />
-      <Tabs.Screen
-        name="favorites"
-        options={{
-          title: 'Избранное',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="heart" size={24} color={color} />
-          ),
-        }}
+      <Tabs.Screen name="favorites" options={{
+        title: 'Избранное',
+        tabBarIcon: ({ color }) => (
+          <Ionicons name="heart" size={24} color={color} />
+        ),
+      }}
       />
     </Tabs>
   );

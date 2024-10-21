@@ -1,43 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Alert } from 'react-native';
 import Parse from '@/config/parseConfig';
 import { useAuth } from '@/app/auth/AuthProvider';
 import { getFilmsById } from '@/api';
 import { Link } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Favorites() {
   const { user } = useAuth();
   const [favorites, setFavorites] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      if (!user) return;  // Убеждаемся, что пользователь авторизован
+  useFocusEffect(
+    useCallback(() => {
+      const fetchFavorites = async () => {
+        setLoading(true);
+        if (!user) {
+          setLoading(false);
+          return;
+        }
 
-      const query = new Parse.Query('Favorites');
-      query.equalTo('userId', user.id);
 
-      try {
-        const results = await query.find();
-        const filmIds = results.map((favorite) => favorite.get('filmId'));
-        const filmDetails = await Promise.all(filmIds.map(id => getFilmsById(id)));
+        const query = new Parse.Query('Favorites');
+        query.equalTo('userId', user.id);
 
-        const favoritesWithStatus = filmDetails.map((film, index) => ({
-          ...film,
-          status: results[index].get('status'),
-        }));
+        try {
+          const results = await query.find();
+          const filmIds = results.map((favorite) => favorite.get('filmId'));
+          const filmDetails = await Promise.all(filmIds.map(id => getFilmsById(id)));
 
-        setFavorites(favoritesWithStatus);
-      } catch (error) {
-        console.error('Ошибка при загрузке избранного:', error);
-        Alert.alert('Ошибка', 'Не удалось загрузить избранные фильмы.');
-      } finally {
-        setLoading(false);
-      }
-    };
+          const favoritesWithStatus = filmDetails.map((film, index) => ({
+            ...film,
+            status: results[index].get('status'),
+          }));
 
-    fetchFavorites();
-  }, [user]); // Оставляем только `user` в зависимостях
+          setFavorites(favoritesWithStatus);
+        } catch (error) {
+          console.error('Ошибка при загрузке избранного:', error);
+          Alert.alert('Ошибка', 'Не удалось загрузить избранные фильмы.');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchFavorites();
+    }, [user])
+  );
 
   const removeFromFavorites = async (filmId: number) => {
     if (!user) return;
@@ -54,7 +62,7 @@ export default function Favorites() {
       }
 
       await Parse.Object.destroyAll(results);
-      setFavorites((prev) => prev.filter((film) => film.kinopoiskId !== filmId)); // Обновляем список локально
+      setFavorites((prev) => prev.filter((film) => film.kinopoiskId !== filmId));
       Alert.alert('Успех', 'Фильм удален из избранного');
     } catch (error) {
       console.error('Ошибка при удалении из избранного:', error);

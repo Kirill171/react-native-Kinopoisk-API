@@ -1,9 +1,10 @@
+import Result, { ResponseById } from '@/interface/ApiResponseInterfaces';
+import { API_KEY } from '@/config';
 const axios = require('axios').default;
-import result, { ResponseById } from '@/interface/ApiResponseInterfaces'
 
-const API_KEY = '31f21f04-bd0c-4829-bf4c-0902dae35cbb';
 
-export default async function getFilms(keyword: string): Promise<result | null> {
+
+export default async function getFilms(keyword: string): Promise<Result | null> {
   try {
     const response = await axios.get('https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword', {
       params: {
@@ -14,7 +15,6 @@ export default async function getFilms(keyword: string): Promise<result | null> 
         'Content-Type': 'application/json',
       }
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -31,7 +31,6 @@ export async function getFilmsById(id: number): Promise<ResponseById | null> {
         'Content-Type': 'application/json',
       }
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
