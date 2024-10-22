@@ -4,9 +4,6 @@ import { View, StyleSheet } from 'react-native';
 export default function NotFoundScreen() {
   return (
     <>
-      {/* <Stack.Screen options={{ title: "Уупс! Эта страница не найдена." }} />
-       ------------------------------ Это имба ебанная -------------------------
-       */}
       <View style={styles.container}>
         <Link href="/">Страница не найдена</Link>
       </View>

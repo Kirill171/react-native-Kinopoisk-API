@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flex: 1,
-    width: 180,
+    width: 140,
     justifyContent: 'center',
     alignItems: 'center',
   },

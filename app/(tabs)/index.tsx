@@ -37,6 +37,7 @@ export default function Index() {
           <TextInput
             style={styles.textInput}
             placeholder="Введите название фильма!"
+            placeholderTextColor={'black'}
             onChangeText={setKeyword}
             onSubmitEditing={handleSearch}
           />

@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useNavigation, Stack } from 'expo-router';
 import { ScrollView, View, Image, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import { getFilmsById } from '@/api'
@@ -12,18 +12,7 @@ export default function FilmsScreen() {
   const { id, title } = useLocalSearchParams<{ id: string; title: string }>();
   const parseId = Number(id);
 
-  const navigation = useNavigation();
-
   useEffect(() => {
-    navigation.setOptions({
-      title: title || 'Фильм',
-      headerRight: () => (<View style={styles.titleIcons}>
-        <TitleFavorite filmId={parseId} />
-        <TitleLogout />
-      </View>)
-
-    });
-
     const fetchFilmDetails = async () => {
       if (parseId) {
         setLoading(true);
@@ -51,6 +40,14 @@ export default function FilmsScreen() {
 
   return (
     <ScrollView>
+      <Stack.Screen options={{
+        title: title || 'Фильм',
+        headerRight: () => (
+          <View style={styles.titleIcons}>
+            <TitleFavorite filmId={parseId} />
+            <TitleLogout />
+          </View>),
+      }} />
       <Image source={{ uri: film.posterUrl }} style={styles.imageFilm} />
       <Text style={styles.title}>О фильме {film.nameRu}</Text>
       <Text style={styles.text}><Text style={styles.boldText}>Описание фильма:</Text> {film.description}</Text>
@@ -80,9 +77,9 @@ const styles = StyleSheet.create({
   },
   imageFilm: {
     justifyContent: 'center',
-    resizeMode: "stretch",
-    width: '100%',
-    height: 500,
+    alignSelf: 'center',
+    width: 250,
+    height: 350,
   },
   title: {
     fontWeight: 'bold',
@@ -92,6 +89,8 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   titleIcons: {
+    position: 'absolute',
+    right: 0,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',

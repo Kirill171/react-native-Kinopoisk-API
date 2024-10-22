@@ -23,12 +23,14 @@ export default function Login() {
       <Text style={styles.title}>Авторизация</Text>
       <TextInput
         placeholder="Username"
+        placeholderTextColor={'black'}
         onChangeText={setUsername}
         value={username}
         style={styles.input}
       />
       <TextInput
         placeholder="Password"
+        placeholderTextColor={'black'}
         secureTextEntry
         onChangeText={setPassword}
         value={password}

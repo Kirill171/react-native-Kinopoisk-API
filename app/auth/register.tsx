@@ -30,17 +30,20 @@ export default function Register() {
       <Text style={styles.title}>Регистрация</Text>
       <TextInput
         placeholder="Username"
+        placeholderTextColor={'black'}
         onChangeText={setUsername}
         style={styles.input}
       />
       <TextInput
         placeholder="Password"
+        placeholderTextColor={'black'}
         secureTextEntry
         onChangeText={setPassword}
         style={styles.input}
       />
       <TextInput
         placeholder="Email"
+        placeholderTextColor={'black'}
         onChangeText={setEmail}
         style={styles.input}
       />
