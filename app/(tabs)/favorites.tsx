@@ -32,6 +32,7 @@ export default function Favorites() {
           const favoritesWithStatus = filmDetails.map((film, index) => ({
             ...film,
             status: results[index].get('status'),
+            rating: results[index].get('rating'),
           }));
 
           setFavorites(favoritesWithStatus);
@@ -46,6 +47,33 @@ export default function Favorites() {
       fetchFavorites();
     }, [user])
   );
+
+  const updateRating = async (filmId: number, newRating: number) => {
+    if (!user) return;
+
+    const query = new Parse.Query('Favorites');
+    query.equalTo('userId', user.id);
+    query.equalTo('filmId', filmId);
+
+    try {
+      const results = await query.find();
+      if (results.length === 0) {
+        Alert.alert('Ошибка', 'Фильм не найден в избранном.');
+        return;
+      }
+
+      results.forEach(result => {
+        result.set('rating', newRating);
+      });
+      await Parse.Object.saveAll(results);
+      setFavorites(prev => prev.map(film =>
+        film.kinopoiskId === filmId ? { ...film, rating: newRating } : film
+      ));
+    } catch (error) {
+      console.error('Ошибка при обновлении рейтинга:', error);
+      Alert.alert('Ошибка', 'Не удалось обновить рейтинг фильма.');
+    }
+  };
 
   const removeFromFavorites = async (filmId: number) => {
     if (!user) return;
@@ -101,6 +129,15 @@ export default function Favorites() {
               <View style={styles.statusContainer}>
                 <Text style={styles.status}>Статус: {film.status}</Text>
               </View>
+              {film.status === 'Посмотрено' && (
+                <View style={styles.ratingContainer}>
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <TouchableOpacity key={star} onPress={() => updateRating(film.kinopoiskId, star)}>
+                      <Text style={styles.star}>{star <= (film.rating || 0) ? '⭐' : '☆'}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
             </View>
             <TouchableOpacity onPress={() => removeFromFavorites(film.kinopoiskId)} style={styles.removeButton}>
               <Text style={styles.removeText}>Удалить</Text>
@@ -108,7 +145,7 @@ export default function Favorites() {
           </View>
         ))}
       </ScrollView>
-    </View >
+    </View>
   );
 }
 
@@ -174,6 +211,13 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
   },
+  ratingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  star: {
+    fontSize: 24,
+  },
   removeButton: {
     height: 50,
     alignSelf: 'center',
@@ -192,6 +236,7 @@ const styles = StyleSheet.create({
   link: {
     justifyContent: 'flex-start',
     textAlign: 'center',
+    maxHeight: 50,
   },
   clearFavorites: {
     flex: 1,
