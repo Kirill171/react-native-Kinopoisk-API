@@ -122,6 +122,7 @@ export default function Favorites() {
                   pathname: '/films/[id]',
                   params: { id: film.kinopoiskId, title: film.nameRu }
                 }}
+                key={film.filmId}
                 style={styles.link}
               >
                 <Text style={styles.title}>{film.nameRu}</Text>
@@ -242,5 +243,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
