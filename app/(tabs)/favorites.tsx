@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Parse from '@/config/parseConfig';
 import { useAuth } from '@/app/auth/AuthProvider';
 import { getFilmsById } from '@/api';
@@ -17,9 +17,9 @@ export default function Favorites() {
         setLoading(true);
         if (!user) {
           setLoading(false);
+          setFavorites([]);
           return;
         }
-
 
         const query = new Parse.Query('Favorites');
         query.equalTo('userId', user.id);
@@ -76,10 +76,16 @@ export default function Favorites() {
 
   return (
     <View style={styles.container}>
-      {favorites.length === 0 ? (
-        <Text style={styles.emptyText}>Ваш список избранного пуст.</Text>
-      ) : (
-        favorites.map((film) => (
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {!user && (
+          <View style={styles.clearFavorites}>
+            <Text style={styles.emptyText}>Для начала войдите в аккаунт.</Text>
+          </View>
+        )}
+        {user && favorites.length === 0 && (
+          <Text style={styles.emptyText}>Ваш список избранного пуст.</Text>
+        )}
+        {user && favorites.map((film) => (
           <View key={film.kinopoiskId} style={styles.card}>
             <Image source={{ uri: film.posterUrl }} style={styles.image} />
             <View style={styles.details}>
@@ -100,9 +106,9 @@ export default function Favorites() {
               <Text style={styles.removeText}>Удалить</Text>
             </TouchableOpacity>
           </View>
-        ))
-      )}
-    </View>
+        ))}
+      </ScrollView>
+    </View >
   );
 }
 
@@ -111,6 +117,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: '#f9f9f9',
     padding: 10,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loading: {
     margin: 50,
@@ -182,4 +193,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     textAlign: 'center',
   },
+  clearFavorites: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

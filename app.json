@@ -4,7 +4,7 @@
     "slug": "react-native-Kinopoisk-API",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/favicon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -13,13 +13,15 @@
       "backgroundColor": "#fff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.montu777.reactnativeKinopoiskAPI"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/favicon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.montu777.reactnativeKinopoiskAPI"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +33,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6ae9d2cd-e425-4ef1-906b-c868f8f34630"
+      }
+    },
+    "owner": "montu777"
   }
 }

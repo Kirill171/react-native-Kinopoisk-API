@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View, Image } from "react-native";
 import { Link, useNavigation } from 'expo-router';
 import 'react-native-get-random-values';
@@ -29,6 +29,13 @@ export default function Index() {
       });
     }
   }, [user, navigation]);
+
+  useEffect(() => {
+    if (!user) {
+      setResults(null);
+      setKeyword('');
+    }
+  }, [user]);
 
   return (
     <View style={styles.container}>
