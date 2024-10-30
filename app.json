@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "react-native-Kinopoisk-API",
+    "name": "Kinopoisk-API",
     "slug": "react-native-Kinopoisk-API",
     "version": "1.0.1",
     "orientation": "portrait",
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/favicon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.montu777.reactnativeKinopoiskAPI"
